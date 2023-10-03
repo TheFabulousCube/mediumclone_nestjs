@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { ExpressRequest } from '../../types/expressRequest.interface';
+import { error_messages } from 'src/utils/constants';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -18,7 +19,10 @@ export class AuthGuard implements CanActivate {
     if (request.user) {
       return true;
     } else {
-      throw new HttpException('None shall pass!', HttpStatus.UNAUTHORIZED);
+      throw new HttpException(
+        error_messages.UNAUTHORIZED_REQUEST,
+        HttpStatus.UNAUTHORIZED,
+      );
     }
   }
 }

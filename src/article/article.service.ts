@@ -11,6 +11,7 @@ import { ArticlesResponseInterface } from '../types/articlesResponse.interface';
 import { findAllArticlesQueryInterface } from '../types/findAllArticlesQuery.Interface';
 import { TagEntity } from '../tag/tag.entity';
 import { TagService } from '../tag/tag.service';
+import { error_messages } from 'src/utils/constants';
 
 @Injectable()
 export class ArticleService {
@@ -113,11 +114,14 @@ export class ArticleService {
   ): Promise<ArticleEntity> {
     const article = await this.articleRepository.findOneBy({ slug: slug });
     if (!article) {
-      throw new HttpException('Article is not found', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        error_messages.ARTICLE_NOT_FOUND,
+        HttpStatus.NOT_FOUND,
+      );
     }
     if (user.id != article.author.id) {
       throw new HttpException(
-        'Only the Author may delete an article',
+        error_messages.ARTICLE_UPDATE,
         HttpStatus.FORBIDDEN,
       );
     }
@@ -131,11 +135,14 @@ export class ArticleService {
   async deleteArticle(user: UserEntity, slug: string): Promise<DeleteResult> {
     const article = await this.articleRepository.findOneBy({ slug: slug });
     if (!article) {
-      throw new HttpException('Article is not found', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        error_messages.ARTICLE_NOT_FOUND,
+        HttpStatus.NOT_FOUND,
+      );
     }
     if (user.id != article.author.id) {
       throw new HttpException(
-        'Only the Author may delete an article',
+        error_messages.ARTICLE_DELETE,
         HttpStatus.FORBIDDEN,
       );
     }

@@ -14,6 +14,7 @@ import {
   mockUserEntity,
 } from './mockUsers';
 import * as bcryputils from 'bcrypt';
+import { error_messages } from 'src/utils/constants';
 
 const mockUserRepository = {
   findOneBy: jest.fn((user: UserEntity) => {
@@ -127,7 +128,7 @@ describe('UserService', () => {
       jest.spyOn(bcryputils, 'compare').mockResolvedValueOnce(false);
 
       await expect(service.loginUser(mockLoginUserDTO)).rejects.toThrowError(
-        'No soup for you!',
+        error_messages.PASSWORD_FAILURE,
       );
     });
   });

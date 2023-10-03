@@ -9,6 +9,7 @@ import { UserResponseInterface } from '../types/userResponse.interface';
 import { LoginUserDto } from '../dto/loginUser.dto';
 import { compare } from 'bcrypt';
 import { UpdateUserDto } from '../dto/updateUser.dto';
+import { error_messages } from 'src/utils/constants';
 
 @Injectable()
 export class UserService {
@@ -26,7 +27,7 @@ export class UserService {
     });
     if (userByEmail || userByUsername) {
       throw new HttpException(
-        'something is already taken.',
+        error_messages.USER_CONFLICT,
         HttpStatus.CONFLICT,
       );
     }
@@ -42,7 +43,7 @@ export class UserService {
     });
     if (!userByEmail) {
       throw new HttpException(
-        'No one by that email is available',
+        error_messages.USER_NOT_FOUND,
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
@@ -55,7 +56,10 @@ export class UserService {
       Object.assign(newUser, userByEmail);
       return await this.userRepository.save(newUser);
     } else {
-      throw new HttpException('No soup for you!', HttpStatus.UNAUTHORIZED);
+      throw new HttpException(
+        error_messages.PASSWORD_FAILURE,
+        HttpStatus.UNAUTHORIZED,
+      );
     }
   }
 
@@ -81,7 +85,10 @@ export class UserService {
 
   buildUserResponse(user: UserEntity): UserResponseInterface {
     if (user === null) {
-      throw new HttpException('User failed validation', HttpStatus.FORBIDDEN);
+      throw new HttpException(
+        error_messages.USER_UNAUTHORIZED,
+        HttpStatus.FORBIDDEN,
+      );
     }
     return user.toUserResponseInterface(this.generateJwt(user));
   }
