@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
-import { ExpressRequest } from 'src/types/expressRequest.interface';
+import { ExpressRequest } from '../types/expressRequest.interface';
 import { mockResponse, mockUserEntity } from './mockUsers';
 
 describe('UserController', () => {

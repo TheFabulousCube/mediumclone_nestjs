@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../user/user.entity';
 import { DataSource, Repository } from 'typeorm';
 import { ProfileType } from '../types/profile.type';
-import { ProfileResponseInterface } from 'src/types/profileResponse.interface';
+import { ProfileResponseInterface } from '../types/profileResponse.interface';
 
 @Injectable()
 export class ProfileService {

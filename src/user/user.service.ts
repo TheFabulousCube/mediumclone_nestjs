@@ -9,7 +9,7 @@ import { UserResponseInterface } from '../types/userResponse.interface';
 import { LoginUserDto } from '../dto/loginUser.dto';
 import { compare } from 'bcrypt';
 import { UpdateUserDto } from '../dto/updateUser.dto';
-import { error_messages } from 'src/utils/constants';
+import { error_messages } from '../utils/constants';
 
 @Injectable()
 export class UserService {

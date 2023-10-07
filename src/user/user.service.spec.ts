@@ -14,7 +14,7 @@ import {
   mockUserEntity,
 } from './mockUsers';
 import * as bcryputils from 'bcrypt';
-import { error_messages } from 'src/utils/constants';
+import { error_messages } from '../utils/constants';
 
 const mockUserRepository = {
   findOneBy: jest.fn((user: UserEntity) => {
@@ -100,7 +100,9 @@ describe('UserService', () => {
     it('should reject duplicates', async () => {
       await expect(
         service.createUser(mockExistingUserDTO),
-      ).rejects.toThrowError('something is already taken.');
+      ).rejects.toThrowError(
+        'Either the username or the email is already taken',
+      );
     });
   });
 

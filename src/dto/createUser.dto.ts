@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
 import * as Joi from 'joi';
-import { error_messages } from 'src/utils/constants';
+import { error_messages } from '../utils/constants';
 
 export const createUserSchema: Joi.Schema = Joi.object({
   username: Joi.string().required(),

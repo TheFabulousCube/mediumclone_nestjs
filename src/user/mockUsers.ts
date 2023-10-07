@@ -1,4 +1,4 @@
-import { LoginUserDto } from 'src/dto/loginUser.dto';
+import { LoginUserDto } from '../dto/loginUser.dto';
 import { CreateUserDto } from '../dto/createUser.dto';
 import { UserResponseInterface } from '../types/userResponse.interface';
 import { UserEntity } from './user.entity';

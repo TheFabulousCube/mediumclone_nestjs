@@ -9,9 +9,8 @@ import slugify from 'slugify';
 import { UpdateArticleDto } from '../dto/updateArticle.dto';
 import { ArticlesResponseInterface } from '../types/articlesResponse.interface';
 import { findAllArticlesQueryInterface } from '../types/findAllArticlesQuery.Interface';
-import { TagEntity } from '../tag/tag.entity';
 import { TagService } from '../tag/tag.service';
-import { error_messages } from 'src/utils/constants';
+import { error_messages } from '../utils/constants';
 
 @Injectable()
 export class ArticleService {
