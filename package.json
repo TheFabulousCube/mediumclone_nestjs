@@ -16,6 +16,7 @@
     "test": "jest",
     "test:tag": "jest src/tag/tag.*.spec.ts",
     "test:user": "jest src/user/user.*.spec.ts --watch",
+    "test:profile": "jest src/profile/profile.*.spec.ts --watch",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",

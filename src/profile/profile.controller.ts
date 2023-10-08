@@ -1,39 +1,56 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
-import { CreateUserDto, createUserSchema } from './../dto/createUser.dto';
-import { UserEntity } from '../user/user.entity';
-import { UserService } from '../user/user.service';
-import { JoiValidationPipe } from './../validation.pipe';
-import { LoginUserDto, loginUserSchema } from '../dto/loginUser.dto';
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { ExpressRequest } from '../types/expressRequest.interface';
 import { AuthGuard } from '../user/guards/auth.guard';
-import { UpdateUserDto, updateUserSchema } from '../dto/updateUser.dto';
 import { ProfileResponseInterface } from '../types/profileResponse.interface';
 import { ProfileService } from './profile.service';
 
 @Controller('profiles')
 export class ProfileController {
-    constructor(private readonly profileService: ProfileService) { }
+  constructor(private readonly profileService: ProfileService) {}
 
-    @Get(':username')
-    async getProfile(@Req() request: ExpressRequest,
-    @Param('username') profileUserName: string): Promise<ProfileResponseInterface> {
-        const profile = await this.profileService.getUserProfile(request.user?.id, profileUserName);
-        return (this.profileService.buildProfileResponse(profile));
-    }
+  @Get(':username')
+  async getProfile(
+    @Req() request: ExpressRequest,
+    @Param('username') profileUserName: string,
+  ): Promise<ProfileResponseInterface> {
+    const profile = await this.profileService.getUserProfile(
+      request.user?.id,
+      profileUserName,
+    );
+    return this.profileService.buildProfileResponse(profile);
+  }
 
-    @Post(':username/follow')
-    @UseGuards(AuthGuard)
-    async followUser(@Req() request: ExpressRequest,
-    @Param('username') profileUserName: string): Promise<any> {
-        const profile = await this.profileService.followUser(request.user, profileUserName);
-        return (this.profileService.buildProfileResponse(profile));
-    }
+  @Post(':username/follow')
+  @UseGuards(AuthGuard)
+  async followUser(
+    @Req() request: ExpressRequest,
+    @Param('username') profileUserName: string,
+  ): Promise<any> {
+    const profile = await this.profileService.followUser(
+      request.user,
+      profileUserName,
+    );
+    return this.profileService.buildProfileResponse(profile);
+  }
 
-    @Delete(':username/follow')
-    @UseGuards(AuthGuard)
-    async unFollowUser(@Req() request: ExpressRequest,
-    @Param('username') profileUserName: string): Promise<any> {
-        const profile = await this.profileService.unFollowUser(request.user, profileUserName);
-        return (this.profileService.buildProfileResponse(profile));
-    }
+  @Delete(':username/follow')
+  @UseGuards(AuthGuard)
+  async unFollowUser(
+    @Req() request: ExpressRequest,
+    @Param('username') profileUserName: string,
+  ): Promise<any> {
+    const profile = await this.profileService.unFollowUser(
+      request.user,
+      profileUserName,
+    );
+    return this.profileService.buildProfileResponse(profile);
+  }
 }
