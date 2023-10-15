@@ -16,7 +16,7 @@ import {
 import * as bcryputils from 'bcrypt';
 import { error_messages } from '../utils/constants';
 
-const mockUserRepository = {
+export const mockUserRepository = {
   findOneBy: jest.fn((user: UserEntity) => {
     if (
       user.email == mockExistingUser.email ||
