@@ -8,4 +8,13 @@ export const error_messages = {
   USER_UNAUTHORIZED: 'User failed validation',
   USER_CONFLICT: 'Either the username or the email is already taken',
   USER_NOT_FOUND: 'No one by that email is available',
+  PROFILE_NOT_FOUND(username: string): string {
+    return `Profile ${username} does not exist`;
+  },
+  PROFILE_ALREADY_FOLLOWING(loggedInUser: string, profile: string): string {
+    return `user ${loggedInUser} is already following ${profile}`;
+  },
+  PROFILE_NOT_FOLLOWING(loggedInUser: string, profile: string): string {
+    return `user ${loggedInUser} isn't following ${profile}`;
+  },
 };

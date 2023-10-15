@@ -70,7 +70,7 @@ export const mockUserEntity: UserEntity = {
       },
     };
   },
-} as UserEntity;
+} as undefined as UserEntity;
 
 /**
  * Existing User Entity
@@ -84,10 +84,10 @@ export const mockExistingUser: UserEntity = {
   image: 'imageURL',
   password: mockExistingUserDTO.password,
   favorites: [],
-  followers: [],
+  followers: [mockUserEntity],
   following: [],
   articles: [],
-  toUserResponseInterface: function (user): UserResponseInterface {
+  toUserResponseInterface: function (): UserResponseInterface {
     return {
       user: {
         email: mockExistingUserDTO.email,
@@ -98,7 +98,7 @@ export const mockExistingUser: UserEntity = {
       },
     };
   },
-} as UserEntity;
+} as undefined as UserEntity;
 
 /**
  *  result from buildUserResponse()

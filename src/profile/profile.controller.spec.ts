@@ -1,19 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { expect, jest, test } from '@jest/globals';
+import { expect, jest } from '@jest/globals';
 import { ProfileController } from './profile.controller';
 import { ProfileService } from './profile.service';
-import { ExpressRequest } from 'src/types/expressRequest.interface';
-import {
-  JWTheader,
-  mockExistingUser,
-  mockExistingUserDTO,
-  mockResponse,
-  mockUserEntity,
-} from '../user/mockUsers';
-import { UserResponseInterface } from 'src/types/userResponse.interface';
-import { UserEntity } from 'src/user/user.entity';
-import { HttpException, HttpStatus } from '@nestjs/common';
-import { ProfileType } from 'src/types/profile.type';
+import { ExpressRequest } from '../types/expressRequest.interface';
+import { mockExistingUser, mockUserEntity } from '../user/mockUsers';
+import { ProfileType } from '../types/profile.type';
+import { error_messages } from '../utils/constants';
 
 describe('ProfileController', () => {
   let controller: ProfileController;
@@ -108,21 +100,30 @@ describe('ProfileController', () => {
     it('throws when no profle is found', async () => {
       jest
         .spyOn(service, 'followUser')
-        .mockRejectedValue(new Error('Async error message'));
+        .mockRejectedValue(
+          new Error(error_messages.PROFILE_NOT_FOUND('user1')),
+        );
 
       await expect(
         controller.followUser(
           mockUserEntity as unknown as ExpressRequest,
           'user1',
         ),
-      ).rejects.toThrow('Async error message');
+      ).rejects.toThrow(error_messages.PROFILE_NOT_FOUND('user1'));
     });
 
     it('should follow user once', async () => {
       jest
         .spyOn(service, 'followUser')
         .mockResolvedValueOnce({ ...mockExistingUser, following: true })
-        .mockRejectedValueOnce(Error('Async error message'));
+        .mockRejectedValueOnce(
+          Error(
+            error_messages.PROFILE_ALREADY_FOLLOWING(
+              mockUserEntity.username,
+              mockExistingUser.username,
+            ),
+          ),
+        );
       const value = await controller.followUser(
         mockUserEntity as unknown as ExpressRequest,
         mockExistingUser.username,
@@ -134,7 +135,12 @@ describe('ProfileController', () => {
           mockUserEntity as unknown as ExpressRequest,
           'user1',
         ),
-      ).rejects.toThrow('Async error message');
+      ).rejects.toThrow(
+        error_messages.PROFILE_ALREADY_FOLLOWING(
+          mockUserEntity.username,
+          mockExistingUser.username,
+        ),
+      );
     });
   });
 
@@ -142,14 +148,16 @@ describe('ProfileController', () => {
     it('should throw when profile not found', async () => {
       jest
         .spyOn(service, 'unFollowUser')
-        .mockRejectedValueOnce(new Error('Async error message'));
+        .mockRejectedValueOnce(
+          new Error(error_messages.PROFILE_NOT_FOUND('user1')),
+        );
 
       await expect(
         controller.unFollowUser(
           mockUserEntity as unknown as ExpressRequest,
           'user1',
         ),
-      ).rejects.toThrow('Async error message');
+      ).rejects.toThrow(error_messages.PROFILE_NOT_FOUND('user1'));
     });
 
     it('should prompt to log in if not logged in', async () => {
@@ -161,7 +169,14 @@ describe('ProfileController', () => {
       jest
         .spyOn(service, 'unFollowUser')
         .mockResolvedValueOnce({ ...mockExistingUser, following: false })
-        .mockRejectedValueOnce(Error('Async error message'));
+        .mockRejectedValueOnce(
+          Error(
+            error_messages.PROFILE_NOT_FOLLOWING(
+              mockUserEntity.username,
+              mockExistingUser.username,
+            ),
+          ),
+        );
       const value = await controller.unFollowUser(
         mockUserEntity as unknown as ExpressRequest,
         mockExistingUser.username,
@@ -173,7 +188,12 @@ describe('ProfileController', () => {
           mockUserEntity as unknown as ExpressRequest,
           'user1',
         ),
-      ).rejects.toThrow('Async error message');
+      ).rejects.toThrow(
+        error_messages.PROFILE_NOT_FOLLOWING(
+          mockUserEntity.username,
+          mockExistingUser.username,
+        ),
+      );
     });
   });
 });

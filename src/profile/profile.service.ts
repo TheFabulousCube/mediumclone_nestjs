@@ -1,16 +1,16 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../user/user.entity';
-import { DataSource, Repository } from 'typeorm';
 import { ProfileType } from '../types/profile.type';
 import { ProfileResponseInterface } from '../types/profileResponse.interface';
+import { error_messages } from '../utils/constants';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ProfileService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    private dataSource: DataSource,
   ) {}
 
   async getUserProfile(userId: number, profileUserName: string): Promise<any> {
@@ -20,12 +20,12 @@ export class ProfileService {
     });
     if (!profileUser) {
       throw new HttpException(
-        `Profile ${profileUserName} does not exist`,
+        error_messages.PROFILE_NOT_FOUND(profileUserName),
         HttpStatus.NOT_FOUND,
       );
     }
     const isFollowing = profileUser.followers.some(
-      (element) => (element.id = userId),
+      (element) => element.id == userId,
     );
     return { ...profileUser, following: isFollowing };
   }
@@ -40,7 +40,7 @@ export class ProfileService {
     });
     if (!profileUser) {
       throw new HttpException(
-        `Profile ${profileUserName} does not exist`,
+        error_messages.PROFILE_NOT_FOUND(profileUserName),
         HttpStatus.NOT_FOUND,
       );
     }
@@ -49,7 +49,10 @@ export class ProfileService {
     );
     if (isFollowing) {
       throw new HttpException(
-        `user ${loggedInUser.username} is already following ${profileUser.username}`,
+        error_messages.PROFILE_ALREADY_FOLLOWING(
+          loggedInUser.username,
+          profileUser.username,
+        ),
         HttpStatus.PRECONDITION_FAILED,
       );
     } else {
@@ -69,7 +72,7 @@ export class ProfileService {
     });
     if (!profileUser) {
       throw new HttpException(
-        `Profile ${profileUserName} does not exist`,
+        error_messages.PROFILE_NOT_FOUND(profileUserName),
         HttpStatus.NOT_FOUND,
       );
     }
@@ -85,7 +88,10 @@ export class ProfileService {
       return { ...profileUser, following: false };
     } else {
       throw new HttpException(
-        `user ${loggedInUser.username} isn't following ${profileUser.username}`,
+        error_messages.PROFILE_NOT_FOLLOWING(
+          loggedInUser.username,
+          profileUser.username,
+        ),
         HttpStatus.PRECONDITION_FAILED,
       );
     }
