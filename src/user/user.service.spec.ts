@@ -16,11 +16,12 @@ import {
 import * as bcryputils from 'bcrypt';
 import { error_messages } from '../utils/constants';
 
-export const mockUserRepository = {
+const mockUserRepository = {
   findOneBy: jest.fn((user: UserEntity) => {
     if (
       user.email == mockExistingUser.email ||
-      user.username == mockExistingUser.username
+      user.username == mockExistingUser.username ||
+      user.id == mockExistingUser.id
     ) {
       return Promise.resolve(mockExistingUser);
     }
@@ -28,7 +29,6 @@ export const mockUserRepository = {
   }),
 
   findOne: jest.fn((user: UserEntity) => {
-    console.log('user passed in: ', user);
     if (user.email == mockExistingUser.email) {
       return Promise.resolve(mockExistingUser);
     } else {
@@ -132,6 +132,22 @@ describe('UserService', () => {
       await expect(service.loginUser(mockLoginUserDTO)).rejects.toThrowError(
         error_messages.PASSWORD_FAILURE,
       );
+    });
+  });
+
+  describe('update user', () => {
+    it('should throw error for invalid user', async () => {
+      await expect(
+        service.updateUser(mockUserEntity.id, mockExistingUser),
+      ).rejects.toThrowError(error_messages.USER_NOT_FOUND);
+    });
+
+    it('should update a valid user', async () => {
+      const updatedUser = await service.updateUser(
+        mockExistingUser.id,
+        mockUserEntity,
+      );
+      expect(updatedUser).toEqual(mockUserEntity);
     });
   });
 });

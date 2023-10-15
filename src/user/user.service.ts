@@ -68,6 +68,12 @@ export class UserService {
     updateUserDto: UpdateUserDto,
   ): Promise<UserEntity> {
     const user = await this.getUserById(userId);
+    if (!user) {
+      throw new HttpException(
+        error_messages.USER_NOT_FOUND,
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
     Object.assign(user, updateUserDto);
     return await this.userRepository.save(user);
   }
@@ -84,12 +90,6 @@ export class UserService {
   }
 
   buildUserResponse(user: UserEntity): UserResponseInterface {
-    if (user === null) {
-      throw new HttpException(
-        error_messages.USER_UNAUTHORIZED,
-        HttpStatus.FORBIDDEN,
-      );
-    }
     return user.toUserResponseInterface(this.generateJwt(user));
   }
 
@@ -104,10 +104,10 @@ async function verifyPassword(
   return await compare(password, hash);
 }
 
-function id(
-  id: any,
-  userId: number,
-  info: UpdateUserDto,
-): UserEntity | PromiseLike<UserEntity> {
-  throw new Error('Function not implemented.');
-}
+// function id(
+//   id: any,
+//   userId: number,
+//   info: UpdateUserDto,
+// ): UserEntity | PromiseLike<UserEntity> {
+//   throw new Error('Function not implemented.');
+// }

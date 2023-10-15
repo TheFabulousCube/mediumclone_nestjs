@@ -1,13 +1,37 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { expect, jest, test } from '@jest/globals';
 import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ProfileService } from './profile.service';
 import { UserEntity } from '../user/user.entity';
-import { mockUserRepository } from '../user/user.service.spec';
 import { mockExistingUser, mockUserEntity } from '../user/mockUsers';
 import { error_messages } from '../utils/constants';
 import { ProfileType } from '../types/profile.type';
 import { ProfileResponseInterface } from '../types/profileResponse.interface';
+
+const mockUserRepository = {
+  findOneBy: jest.fn((user: UserEntity) => {
+    if (
+      user.email == mockExistingUser.email ||
+      user.username == mockExistingUser.username ||
+      user.id == mockExistingUser.id
+    ) {
+      return Promise.resolve(mockExistingUser);
+    }
+    return Promise.resolve(null);
+  }),
+
+  findOne: jest.fn((user: UserEntity) => {
+    if (user.email == mockExistingUser.email) {
+      return Promise.resolve(mockExistingUser);
+    } else {
+      return Promise.resolve(null);
+    }
+  }),
+  save: jest.fn((user: UserEntity) => {
+    return Promise.resolve(user);
+  }),
+};
 
 describe('Profile Service', () => {
   let service: ProfileService;
@@ -28,6 +52,10 @@ describe('Profile Service', () => {
       getRepositoryToken(UserEntity),
     );
     jest.spyOn(userRepository, 'findOne').mockResolvedValue(mockExistingUser);
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 
   it('should be defined', () => {
@@ -101,21 +129,22 @@ describe('Profile Service', () => {
       );
     });
 
+    it('UN follows user', async () => {
+      await expect(
+        service.unFollowUser(mockUserEntity, mockExistingUser.username),
+      ).resolves.toEqual({ ...mockExistingUser, following: false });
+    });
+
     it('throws error if not following', async () => {
-      jest.spyOn(userRepository, 'findOne').mockResolvedValue(mockUserEntity);
+      jest.spyOn(userRepository, 'findOne').mockResolvedValue(mockExistingUser);
       await expect(
         service.unFollowUser(mockExistingUser, mockUserEntity.username),
       ).rejects.toThrowError(
         error_messages.PROFILE_NOT_FOLLOWING(
           mockExistingUser.username,
-          mockUserEntity.username,
+          mockExistingUser.username,
         ),
       );
-    });
-    it('UN follows user', async () => {
-      await expect(
-        service.unFollowUser(mockUserEntity, mockExistingUser.username),
-      ).resolves.toEqual({ ...mockExistingUser, following: false });
     });
   });
 
