@@ -7,9 +7,10 @@ import { sign } from 'jsonwebtoken';
 import { JWT_SECRET } from '../config';
 import { UserResponseInterface } from '../types/userResponse.interface';
 import { LoginUserDto } from '../dto/loginUser.dto';
-import { compare } from 'bcrypt';
 import { UpdateUserDto } from '../dto/updateUser.dto';
 import { error_messages } from '../utils/constants';
+import { compare } from 'bcrypt';
+var bcrypt = require('bcrypt');
 
 @Injectable()
 export class UserService {
@@ -28,7 +29,7 @@ export class UserService {
     if (userByEmail || userByUsername) {
       throw new HttpException(
         error_messages.USER_CONFLICT,
-        HttpStatus.CONFLICT,
+        HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
     const newUser = new UserEntity();
@@ -52,9 +53,7 @@ export class UserService {
       userByEmail.password,
     );
     if (verified) {
-      const newUser = new UserEntity();
-      Object.assign(newUser, userByEmail);
-      return await this.userRepository.save(newUser);
+      return userByEmail;
     } else {
       throw new HttpException(
         error_messages.PASSWORD_FAILURE,
@@ -74,6 +73,8 @@ export class UserService {
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
+    console.log('user service: user from db - ', user);
+    console.log('user service: user passed in- ', updateUserDto);
     Object.assign(user, updateUserDto);
     return await this.userRepository.save(user);
   }
@@ -101,7 +102,7 @@ async function verifyPassword(
   password: string,
   hash: string,
 ): Promise<boolean> {
-  return await compare(password, hash);
+  return await bcrypt.compare(password, hash);
 }
 
 // function id(

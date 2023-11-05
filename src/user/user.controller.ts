@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
   Post,
   Put,
   Req,
@@ -41,6 +42,7 @@ export class UserController {
   }
 
   @Post('users/login')
+  @HttpCode(200)
   @UsePipes(new JoiValidationPipe(loginUserSchema))
   async loginUser(
     @Body('user') body: LoginUserDto,
