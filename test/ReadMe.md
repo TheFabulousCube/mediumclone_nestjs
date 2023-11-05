@@ -1,6 +1,6 @@
 # I've added Karate tests to my NestJs API!
 
-<a href="https://www.karatelabs.io/" target="blank"><img src="../../src/utils/karate-labs-logo-ring.svg" width="100" alt="Karate Logo" /></a>
+<a href="https://www.karatelabs.io/" target="blank"><img src="../src/utils/karate-labs-logo-ring.svg" width="100" alt="Karate Logo" /></a>
 Based on the PluralSight course [Karate Fundamentals](https://www.pluralsight.com/courses/karate-fundamentals). I enjoyed this course (and the Karate Test Framework) so much I wanted some more practice with it!
 
 ## I'm still working on the API, so I'm still working on the tests
