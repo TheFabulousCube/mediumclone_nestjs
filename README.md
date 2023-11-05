@@ -5,7 +5,7 @@
 </p>
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="100" alt="Nest Logo" /></a>
-  <a href="https://www.karatelabs.io/" target="blank"><img src="test\RealWorldAPI\target\karate-reports\karate-labs-logo-ring.svg" width="100" alt="Karate Logo" /></a>
+  <a href="https://www.karatelabs.io/" target="blank"><img src="src/utils/karate-labs-logo-ring.svg" width="100" alt="Karate Logo" /></a>
 </p>
 
 ## Description
@@ -13,6 +13,7 @@
 My implementation of the **RealWorld** specs, as taught through the Udemy course [NestJS - Building Real Project API From Scratch](https://www.udemy.com/course/nestjs-building-real-project-api-from-scratch)
 
 **Now with Karate tests!**
+I've added some [Karate tests](/test/Karate Tests) and actually found a couple of errors!
 
 This course was based on building the [RealWorld](https://realworld-docs.netlify.app/docs/intro) demo. Specifically adhering to the [backend specs](https://realworld-docs.netlify.app/docs/specs/backend-specs/introduction). This was really nice since it really gave you a chance to build something more that an simple 'to do' application.
 
