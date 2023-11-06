@@ -10,7 +10,7 @@ import { LoginUserDto } from '../dto/loginUser.dto';
 import { UpdateUserDto } from '../dto/updateUser.dto';
 import { error_messages } from '../utils/constants';
 import { compare } from 'bcrypt';
-var bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 
 @Injectable()
 export class UserService {
@@ -44,11 +44,11 @@ export class UserService {
     });
     if (!userByEmail) {
       throw new HttpException(
-        error_messages.USER_NOT_FOUND,
-        HttpStatus.UNPROCESSABLE_ENTITY,
+        error_messages.USER_UNAUTHORIZED,
+        HttpStatus.FORBIDDEN,
       );
     }
-    const verified: Boolean = await verifyPassword(
+    const verified: boolean = await verifyPassword(
       creds.password,
       userByEmail.password,
     );
@@ -56,8 +56,8 @@ export class UserService {
       return userByEmail;
     } else {
       throw new HttpException(
-        error_messages.PASSWORD_FAILURE,
-        HttpStatus.UNAUTHORIZED,
+        error_messages.USER_UNAUTHORIZED,
+        HttpStatus.FORBIDDEN,
       );
     }
   }

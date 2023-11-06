@@ -119,7 +119,7 @@ describe('UserService', () => {
 
     it('should throw error for invalid user', async () => {
       await expect(service.loginUser(mockLoginUserDTO)).rejects.toThrowError(
-        'No one by that email is available',
+        error_messages.USER_UNAUTHORIZED,
       );
     });
 
@@ -130,7 +130,7 @@ describe('UserService', () => {
       jest.spyOn(bcryputils, 'compare').mockResolvedValueOnce(false);
 
       await expect(service.loginUser(mockLoginUserDTO)).rejects.toThrowError(
-        error_messages.PASSWORD_FAILURE,
+        error_messages.USER_UNAUTHORIZED,
       );
     });
   });
