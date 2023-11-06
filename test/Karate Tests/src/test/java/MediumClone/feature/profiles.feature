@@ -4,6 +4,7 @@ Feature: Profiles
   Background:
     * url apiUrl
     * callonce read('classpath:MediumClone/schemas/ProfileResponse.feature')
+    * def user1 = call read('classpath:mediumClone/feature/createUser.feature@newuser')
 
   Scenario: Get a profile
     Given path 'profiles', user1.username

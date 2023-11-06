@@ -1,4 +1,4 @@
-package MediumClone;
+package mediumClone;
 
 import com.intuit.karate.Results;
 import com.intuit.karate.Runner;
@@ -9,7 +9,7 @@ class MediumCloneTest {
 
     @Test
     void testParallel() {
-        Results results = Runner.path("classpath:MediumClone")
+        Results results = Runner.path("classpath:mediumClone")
                 //.outputCucumberJson(true)
                 .parallel(5);
         assertEquals(0, results.getFailCount(), results.getErrorMessages());

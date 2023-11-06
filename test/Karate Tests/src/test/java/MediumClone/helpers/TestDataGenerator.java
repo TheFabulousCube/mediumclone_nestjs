@@ -1,4 +1,4 @@
-package MediumClone.helpers;
+package mediumClone.helpers;
 
 import com.github.javafaker.Faker;
 
@@ -12,7 +12,7 @@ public class TestDataGenerator {
 
     public static String getRandomEmail() {
         Faker faker = new Faker();
-        String email = faker.ancient().hero() + "@" + faker.ancient().god() + "email.com";
+        String email = faker.bothify("????###????###") + "@" + faker.ancient().hero() + "email.com";
         return email;
     }
 

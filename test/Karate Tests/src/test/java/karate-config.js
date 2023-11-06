@@ -13,9 +13,5 @@ function fn() {
   } else if (env == 'live') {
     config.apiUrl = "https://api.realworld.io/api"
   }
-
-    var user1 = karate.callSingle('classpath:MediumClone/feature/createUser.feature', config)
-    config.user1 = user1
-    karate.log("created user xp:" + user1.username)
   return config;
 }

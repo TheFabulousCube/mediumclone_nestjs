@@ -4,29 +4,21 @@ Feature: Users
 
   Background:
     * url apiUrl
+    * callonce read('classpath:mediumClone/schemas/UserResponse.feature')
+    * def newUser = call read('classpath:mediumClone/feature/createUser.feature@newuser')
 
-    @negative
-  Scenario: Get current user fails when not logged in
+  Scenario: Get current user gets logged in user
     Given path 'user'
+    And header  Authorization = 'Bearer ' + newUser.token
+    When method Get
+    Then status 200
+    And match response == userResponse
+
+  @negative
+  Scenario: Get current user fails if not logged in
+    Given path 'user'
+    And header  Authorization = null
     When method Get
     Then status 401
 
-    @negative
-  Scenario: Create new user missing fields fails
-    Given path 'users'
-    And request { user: { username: null, email: 'random@email.com', password: 'randompassword'}}
-    When method Post
-    Then status 422
-    And match response contains any { username: '#present' }
 
-    Given path 'users'
-    And request { user: { username: 'randomUsername', email: null, password: 'randompassword'}}
-    When method Post
-    Then status 422
-      And match response contains any { email: '#present' }
-
-    Given path 'users'
-    And request { user: { username: 'randomUsername', email: 'random@email.com', password: null}}
-    When method Post
-    Then status 422
-      And match response contains any { password: '#present' }

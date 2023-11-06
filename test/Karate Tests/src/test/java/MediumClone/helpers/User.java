@@ -1,4 +1,4 @@
-package MediumClone.helpers;
+package mediumClone.helpers;
 
 public class User {
     String username;
