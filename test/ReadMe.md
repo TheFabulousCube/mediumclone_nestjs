@@ -18,8 +18,18 @@ I've also stuck with the Maven build, although I'm sure there _is_ a Gradle buil
 - Simple run command  
   `mvn clean test` (defaults to local)
 - Pass in environment  
-  `mvn clean test -Dkarate.env=local`
+  `mvn clean test -Dkarate.env=local`  
   `mvn clean test -Dkarate.env=live`
 
 - Test results are generated in the /target folder  
   `test\Karate Tests\target\karate-reports\karate-summary.html`
+
+  If you'd like to try it out yourself, all you need is the Karate Tests folder. Make sure you run using the live endpoint:  
+  `mvn clean test -Dkarate.env=live`
+
+  Alternately, you can build into a jar file:  
+  `mvn clean package -Dkarate.env=live`  
+  This will build a .jar file at _/Karate Tests/target/RealWorldAPI-0.5.0.jar_
+
+  Then you can run from cmd line:  
+  `java -jar RealWorldAPI-0.5.0.jar`
