@@ -6,8 +6,10 @@
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="100" alt="Nest Logo" /></a>
   <a href="https://www.karatelabs.io/" target="blank"><img src="src/utils/karate-labs-logo-ring.svg" width="100" alt="Karate Logo" /></a>
-</p>  
-[![Node.js CI](https://github.com/TheFabulousCube/mediumclone_nestjs/actions/workflows/node.js.yml/badge.svg)](https://github.com/TheFabulousCube/mediumclone_nestjs/actions/workflows/node.js.yml)  
+</p>
+
+[![Node.js CI](https://github.com/TheFabulousCube/mediumclone_nestjs/actions/workflows/node.js.yml/badge.svg)](https://github.com/TheFabulousCube/mediumclone_nestjs/actions/workflows/node.js.yml)
+
 ## Description
 
 My implementation of the **RealWorld** specs, as taught through the Udemy course [NestJS - Building Real Project API From Scratch](https://www.udemy.com/course/nestjs-building-real-project-api-from-scratch)
